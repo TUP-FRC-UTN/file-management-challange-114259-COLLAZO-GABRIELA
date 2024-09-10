@@ -1,1 +1,84 @@
-add code here!!
+<div @if(!goForm)>
+  <div>
+    <h2>Archivos</h2>
+
+    <div class="btn-group">
+      <button type="button" class="btn btn-primary">Acciones</button>
+      <button
+        type="button"
+        class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      ></button>
+      <ul class="dropdown-menu">
+        <li>
+          <a class="dropdown-item" href="#" (click)="addFolder()">Nuevo</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#" (click)="deleteFolder()">Borrar</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Fecha</th>
+        <th scope="col">Dueños</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (item of files; track $index) {
+
+      <tr></tr>
+      <tr>
+        <td>
+          <input
+            type="checkbox"
+            [value]="item.id"
+            [(ngModel)]="checked[$index]"
+            (change)="onSelectedCheck($event, item.id)"
+          />
+        </td>
+        <td
+          style="
+            max-width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          "
+          title="{{ item.name }}"
+        >
+          {{
+            item.name.length > 10
+              ? (item.name | slice : 0 : 10) + "..."
+              : item.name
+          }}
+        </td>
+        <td>{{ item.creation | date }}</td>
+        <td>
+          <div class="avatars">
+            @for (owner of item.owners; track $index){
+            <img
+              src="{{ owner.avatarUrl }}"
+              alt="Avatar"
+              class="avatar-img"
+              style="
+                width: 24px;
+                height: 24px;
+                border-radius: 50%;
+                margin-right: 5px;
+              "
+            />
+            }
+          </div>
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+<app-form @if(goForm) (folderToEmit)="onAddNewFolder($event)"></app-form>

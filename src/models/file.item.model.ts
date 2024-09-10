@@ -1,7 +1,7 @@
 export interface FileItem {
   id: string;
   name: string;
-  creation: Date;
+  creation: Date | null; 
   owners: FileOwner[];
   type: FileType;
   parentId?: string;
